@@ -10,3 +10,5 @@ python-multipart==0.0.9
 
 beautifulsoup4==4.12.3
 pandas==2.2.2
+
+pytest==8.2.0
