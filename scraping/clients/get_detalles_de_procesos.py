@@ -37,7 +37,7 @@ def obtener_detalles_proceso(data: List[str]) -> List[dict]:
         dict: Datos detallados del proceso obtenidos.
     """
 
-    url = f"{settings.BASE_URL_API}actuacionesJudiciales"
+    url = f"{settings.BASE_URL_API}EXPEL-CONSULTA-CAUSAS-SERVICE/api/consulta-causas/informacion/actuacionesJudiciales"
 
     payload = {
         "idMovimientoJuicioIncidente": data["lstIncidenteJudicatura"][0][
@@ -91,7 +91,7 @@ def obtener_datos_incidente_judicatura(numero_juicio: List[str]) -> List[dict]:
 
     try:
         for item in numero_juicio:
-            url = f"{settings.BASE_URL_API}getIncidenteJudicatura/{item}"
+            url = f"{settings.BASE_URL_API}EXPEL-CONSULTA-CAUSAS-CLEX-SERVICE/api/consulta-causas-clex/informacion/getIncidenteJudicatura/{item}"
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
