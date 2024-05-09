@@ -14,4 +14,4 @@ class Settings:
     ALLOW_METHODS = os.getenv("ALLOW_METHODS")
     ALLOW_HEADERS = os.getenv("ALLOW_HEADERS")
     
-    BASE_URL_API = "https://api.funcionjudicial.gob.ec/EXPEL-CONSULTA-CAUSAS-SERVICE/api/consulta-causas/informacion/"
+    BASE_URL_API = "https://api.funcionjudicial.gob.ec/"
