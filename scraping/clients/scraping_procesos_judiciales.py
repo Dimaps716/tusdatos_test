@@ -1,9 +1,8 @@
 import pandas as pd
 import requests
+from fastapi import HTTPException, status
 
-from fastapi import BackgroundTasks, HTTPException, status
 from db import insertar_datos_actor_ofendido, insertar_datos_demandado_procesado
-from scraping.clients.get_detalles_de_procesos import obtener_datos_incidente_judicatura
 from settings import Settings
 
 settings = Settings()
@@ -32,7 +31,7 @@ def scraping_procesos(actor_id: list = None, demandado_id: list = None):
                 detail="Debe proporcionar al menos uno de los siguientes parámetros: actor_id, demandado_id",
             )
 
-        url = f"{settings.BASE_URL_API}consulta-causas/informacion/buscarCausas?page={{}}&size=10"
+        url = f"{settings.BASE_URL_API}EXPEL-CONSULTA-CAUSAS-SERVICE/api/consulta-causas/informacion/buscarCausas?page={{}}&size=10"
 
         all_data = []
 
@@ -104,11 +103,12 @@ def eliminar_columnas_nulas_y_guardar_en_bd(df, tabla):
         if tabla == "Actor_Ofendido":
             df_data = df.dropna(axis=1)
             insertar_datos_actor_ofendido(df_data)
+            return df_data
         else:
             df_data = df.dropna(axis=1, how="all")
             insertar_datos_demandado_procesado(df_data)
+            return df_data
 
-        return df_data
     except Exception as e:
         raise RuntimeError(
             f"Error al procesar y guardar los datos en la base de datos: {e}"
