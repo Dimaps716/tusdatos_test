@@ -1,10 +1,10 @@
 import pandas as pd
 import requests
 
-from fastapi import BackgroundTasks, status
+from fastapi import BackgroundTasks, HTTPException, status
 from db import insertar_datos_actor_ofendido, insertar_datos_demandado_procesado
-from scraping.get_detalles_de_procesos import obtener_datos_incidente_judicatura
-from setting import Settings
+from scraping.clients.get_detalles_de_procesos import obtener_datos_incidente_judicatura
+from settings import Settings
 
 settings = Settings()
 

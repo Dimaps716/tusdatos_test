@@ -1,11 +1,12 @@
 import json
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
-from fastapi import status
+from fastapi import HTTPException, status
 
 from db import insertar_proceso, insertar_detalles_proceso
-from setting import Settings
+from settings import Settings
 
 settings = Settings()
 

@@ -1,9 +1,9 @@
 import pandas as pd
 from fastapi import APIRouter, HTTPException, status, BackgroundTasks
 
-from scraping.get_detalles_de_procesos import obtener_datos_incidente_judicatura
+from scraping.clients.get_detalles_de_procesos import obtener_datos_incidente_judicatura
 from scraping.model.scraping_model import ScrapingDataRequest
-from scraping.scraping_procesos_judiciales import scraping_procesos
+from scraping.clients.scraping_procesos_judiciales import scraping_procesos
 from settings import Settings
 
 settings = Settings()
