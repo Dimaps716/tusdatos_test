@@ -1,12 +1,13 @@
-from typing import List, Optional
+from typing import List, Union
+
 from pydantic import BaseModel
 
 from scraping.utils import data
 
 
 class ScrapingDataRequest(BaseModel):
-    actor_id: Optional[List[str]]
-    demandado_id: Optional[List[str]]
+    actor_id: List[Union[str, None]] = None
+    demandado_id: List[Union[str, None]] = None
 
     class Config:
         json_schema_extra = data
