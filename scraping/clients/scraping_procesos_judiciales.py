@@ -32,7 +32,7 @@ def scraping_procesos(actor_id: list = None, demandado_id: list = None):
                 detail="Debe proporcionar al menos uno de los siguientes parámetros: actor_id, demandado_id",
             )
 
-        url = f"{settings.BASE_URL_API}buscarCausas?page={{}}&size=10"
+        url = f"{settings.BASE_URL_API}consulta-causas/informacion/buscarCausas?page={{}}&size=10"
 
         all_data = []
 
