@@ -5,8 +5,8 @@ requests==2.31.0
 python-dotenv==0.20.0
 python-multipart==0.0.9
 
-#google-generativeai
-#APScheduler==3.10.4
+passlib ==1.7.4
+PyJWT==2.8.0
 
 beautifulsoup4==4.12.3
 pandas==2.2.2
