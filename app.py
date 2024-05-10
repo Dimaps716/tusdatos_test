@@ -9,8 +9,9 @@ settings = Settings()
 
 
 app = FastAPI(
-    title="CRM API",
-    description="CRM API to interact with Hubspot",
+    title="Scraping - API web",
+    description="Este es un proyecto de Prueba técnica Desarrollador Backend Python,"
+                " que utiliza FastAPI para crear una API web y un Scraping",
     version="0.0.1",
     root_path=settings.ROOT_PATH,
 )
