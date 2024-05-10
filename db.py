@@ -3,6 +3,24 @@ import sqlite3
 
 nombre_bd = 'tusdatos.db'
 
+
+def crear_tabla_usuarios():
+    conn = sqlite3.connect(nombre_bd)
+    cursor = conn.cursor()
+
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL
+            )
+        ''')
+
+    conn.commit()
+    conn.close()
+
+
 def crear_tabla_demandado_procesado():
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
@@ -10,6 +28,7 @@ def crear_tabla_demandado_procesado():
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS Demandado_Procesado (
                 id INTEGER PRIMARY KEY,
+                demandado_id TEXT,
                 idJuicio TEXT,
                 estadoActual TEXT,
                 idMateria INTEGER,
@@ -30,6 +49,7 @@ def crear_tabla_actor_ofendido():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Actor_Ofendido (
             id INTEGER PRIMARY KEY,
+            actor_id TEXT,
             idJuicio TEXT,
             estadoActual TEXT,
             idMateria INTEGER,
@@ -67,7 +87,6 @@ def crear_tabla_detalles_proceso():
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
 
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Detalles_Proceso (
             id INTEGER PRIMARY KEY,
@@ -101,59 +120,76 @@ def insertar_datos_demandado_procesado(datos):
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
 
-    valores = [(dato.idJuicio, dato.estadoActual, dato.idMateria, dato.nombreDelito,
+    valores = [( dato.demandado_id, dato.idJuicio, dato.estadoActual, dato.idMateria, dato.nombreDelito,
                 dato.fechaIngreso.date(), dato.iedocumentoAdjunto)
                for dato in datos.itertuples(index=False)]
 
     cursor.executemany('''
-                INSERT INTO Demandado_Procesado (idJuicio, estadoActual, idMateria, nombreDelito, fechaIngreso, iedocumentoAdjunto)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO Demandado_Procesado (demandado_id, idJuicio, estadoActual, idMateria, nombreDelito, fechaIngreso, iedocumentoAdjunto)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', valores)
 
     conn.commit()
     conn.close()
 
 
-def obtener_id_juicios_demandado_procesado():
+def obtener_id_demandado_procesado():
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
 
     cursor.execute('''
-        SELECT idJuicio FROM Demandado_Procesado
+        SELECT demandado_id FROM Demandado_Procesado
     ''')
-    id_juicios = cursor.fetchall()
+    demandado = cursor.fetchall()
 
     conn.close()
 
-    return [id[0] for id in id_juicios]
+    return demandado
+
+
+def consultar_demandado_por_demandado_id(demandado_id: str):
+    conn = sqlite3.connect(nombre_bd)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Demandado_Procesado WHERE demandado_id = ?', (demandado_id,))
+    demandados_procesados = cursor.fetchall()
+
+    conn.close()
+
+    demandados_procesados_list = list(map(lambda demandado: dict(demandado), demandados_procesados))
+
+    return demandados_procesados_list
 
 
 def insertar_datos_actor_ofendido(datos):
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
 
-    valores = [(dato.idJuicio, dato.estadoActual, dato.idMateria, dato.nombreDelito, dato.fechaIngreso.date(),
+    valores = [(dato.actor_id, dato.idJuicio, dato.estadoActual, dato.idMateria, dato.nombreDelito, dato.fechaIngreso.date(),
                 dato.iedocumentoAdjunto) for dato in datos.itertuples(index=False)]
 
     cursor.executemany('''
-           INSERT INTO Actor_Ofendido (idJuicio, estadoActual, idMateria, nombreDelito, fechaIngreso, iedocumentoAdjunto)
-           VALUES (?, ?, ?, ?, ?, ?)
+           INSERT INTO Actor_Ofendido (actor_id, idJuicio, estadoActual, idMateria, nombreDelito, fechaIngreso, iedocumentoAdjunto)
+           VALUES (?, ?, ?, ?, ?, ?, ?)
        ''', valores)
     conn.commit()
     conn.close()
 
-def obtener_id_juicios_actor_ofendido():
+
+def obtener_actor_ofendido(actor_id):
     conn = sqlite3.connect(nombre_bd)
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    cursor.execute('''
-        SELECT idJuicio FROM Actor_Ofendido
-    ''')
-
-    id_juicios = cursor.fetchall()
+    cursor.execute('SELECT * FROM Actor_Ofendido WHERE actor_id = ?', (actor_id,))
+    actor_ofendido = cursor.fetchall()
 
     conn.close()
-    return [id[0] for id in id_juicios]
+
+    actor_ofendido_list = list(map(lambda actor: dict(actor), actor_ofendido))
+
+    return actor_ofendido_list
 
 
 def insertar_proceso(datos):
@@ -175,6 +211,7 @@ def insertar_proceso(datos):
     conn.commit()
     conn.close()
 
+
 def insertar_detalles_proceso(datos):
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
@@ -193,21 +230,64 @@ def insertar_detalles_proceso(datos):
     conn.commit()
     conn.close()
 
-def consultar_por_id_juicio(id_juicio):
+
+def insertar_usuario(username, password, email):
     conn = sqlite3.connect(nombre_bd)
     cursor = conn.cursor()
 
-    cursor.execute('''
-        SELECT * FROM Detalles WHERE idJuicio = ?
-    ''', (id_juicio,))
+    cursor.execute('INSERT INTO Usuarios (username, password, email) VALUES (?, ?, ?)', (username, password, email))
 
-    detalles = cursor.fetchall()
+    conn.commit()
+    conn.close()
+
+
+def buscar_usuario_email_or_username(email=None, username=None):
+    conn = sqlite3.connect(nombre_bd)
+    cursor = conn.cursor()
+    if username:
+        cursor.execute('SELECT * FROM Usuarios WHERE username = ?', (username,))
+    else:
+        cursor.execute('SELECT * FROM Usuarios WHERE email = ?', (email,))
+    usuario = cursor.fetchone()
 
     conn.close()
 
-    return detalles
+    if usuario:
+        return {
+            "id": usuario[0],
+            "username": usuario[1],
+            "password": usuario[2],
+            "email": usuario[3]
+        }
+    else:
+        return None
+def obtener_proceso(id_juicio: str):
+    conn = sqlite3.connect(nombre_bd)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Proceso WHERE idJuicio = ?', (id_juicio,))
+    proceso = cursor.fetchone()
+    if not proceso:
+        return None
+    conn.close()
+    return proceso
+def obtener_proceso_detalles(id_juicio: str):
+    conn = sqlite3.connect(nombre_bd)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Detalles_Proceso WHERE idJuicio = ?', (id_juicio,))
+    detalles_proceso = cursor.fetchall()
+
+    conn.close()
+
+    detalles_proceso_list = list(map(lambda detalles: dict(detalles), detalles_proceso))
+
+    return detalles_proceso_list
+
 
 crear_tabla_demandado_procesado()
 crear_tabla_actor_ofendido()
 crear_tabla_proceso()
 crear_tabla_detalles_proceso()
+crear_tabla_usuarios()
