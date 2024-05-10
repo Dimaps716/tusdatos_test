@@ -29,6 +29,7 @@ def test_scraping_procesos_actor_id():
     except Exception as e:
         assert False, f"Error inesperado: {e}"
 
+
 def test_scraping_procesos_demandado_id():
     try:
         demandado_id = ["1791251237001"]
@@ -38,6 +39,7 @@ def test_scraping_procesos_demandado_id():
 
     except Exception as e:
         assert False, f"Error inesperado: {e}"
+
 
 def test_scraping_procesos_sin_parametros():
     try:
