@@ -62,6 +62,8 @@ def scraping_procesos(actor_id: list = None, demandado_id: list = None):
                     url.format(page), headers=headers, json=payload
                 )
                 data = response.json()
+                for item in data:
+                    item[data_type + "_id"] = id
 
                 if not data:
                     break
