@@ -1,18 +1,20 @@
 # FastAPI Project
 
-Este es un proyecto de ejemplo que utiliza FastAPI para crear una API web.
+Este es un proyecto de Prueba técnica Desarrollador Backend Python,
+ que utiliza FastAPI para crear una API web y un Scraping. los datos octenidos son de https://procesosjudiciales.funcionjudicial.gob.ec/expel-busqueda-avanzada
 
 ## Requisitos
 
 - Python >= 3.7
 - Pip (administrador de paquetes de Python)
+- SQLite
 
 ## Instalación
 
 1. Clona el repositorio desde GitHub:
 
 ```bash
-git clone https://github.com/tu_usuario/tu_proyecto.git
+git clone https://github.com/Dimaps716/tusdatos_test.git
 ```
 
 2. Navega al directorio del proyecto:
@@ -39,9 +41,19 @@ Una vez que hayas clonado el repositorio, instalado las dependencias y configura
 uvicorn app.main:app --reload
 ```
 
-Esto iniciará el servidor de desarrollo de FastAPI y podrás acceder a la API en `http://localhost:8000`.
+Esto iniciará el servidor de desarrollo de FastAPI y podrás acceder a la API en `http://localhost:8000/docs`.
 
-## Contribución
+![img.png](img_md/img.png)
+Corrige el texto. Una vez en este punto, tendrás que ejecutar el scraping. Presiona el botón 'Try it out' y agrega los datos correspondientes. Recuerda que es una lista
+![img_1.png](img_md/img_1.png)
+
+Esto buscará todos los procesos asociados a esos IDs y también buscará los detalles de cada proceso en Bagraumed, y los guardará en la base de datos
+![img_2.png](img_md/img_2.png)
+Luego tendrás que crear un usuario y hacer login para obtener un token, el cual es necesario para hacer las próximas consultas
+![img_3.png](img_md/img_3.png)
+![img_4.png](img_md/img_4.png)
+Ahora, para consultar los demás enporin, solo tienes que poner tu token y el código ID de lo que buscas. Recuerda que esta información ya está guardada en la base de datos.## Contribución
+![img_5.png](img_md/img_5.png)
 
 Si deseas contribuir a este proyecto, por favor sigue estas pautas:
 
