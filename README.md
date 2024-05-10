@@ -52,9 +52,12 @@ Esto buscará todos los procesos asociados a esos IDs y también buscará los de
 Luego tendrás que crear un usuario y hacer login para obtener un token, el cual es necesario para hacer las próximas consultas
 ![img_3.png](img_md/img_3.png)
 ![img_4.png](img_md/img_4.png)
-Ahora, para consultar los demás enporin, solo tienes que poner tu token y el código ID de lo que buscas. Recuerda que esta información ya está guardada en la base de datos.## Contribución
+Ahora, para consultar los demás enporin, solo tienes que poner tu token y el código ID de lo que buscas. Recuerda que esta información ya está guardada en la base de datos.
 ![img_5.png](img_md/img_5.png)
 
+#### Toma en cuenta que el código del scraping realiza múltiples peticiones a la API, por lo que puede demorar un poco en extraer la información y guardarla en la base de datos
+
+## Contribución
 Si deseas contribuir a este proyecto, por favor sigue estas pautas:
 
 1. Haz un fork del repositorio.
