@@ -20,7 +20,7 @@ git clone https://github.com/Dimaps716/tusdatos_test.git
 2. Navega al directorio del proyecto:
 
 ```bash
-cd tu_proyecto
+cd tusdatos_test
 ```
 
 3. Instala las dependencias del proyecto:
@@ -31,31 +31,42 @@ pip install -r requirements.txt
 
 ## Configuración
 
-1. Crea un archivo `.env` en el directorio raíz del proyecto y configura las variables de entorno necesarias. Puedes encontrar un ejemplo de las variables requeridas en el archivo `.env.example`.
+1. Crea un archivo `.env` en el directorio raíz del proyecto y configura las variables de entorno necesarias. Ejemplo mínimo:
+
+```
+ALLOW_ORIGINS=*
+ALLOW_CREDENTIALS=true
+ALLOW_METHODS=*
+ALLOW_HEADERS=*
+
+SECRET_KEY=change_me
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
 
 ## Ejecución
 
 Una vez que hayas clonado el repositorio, instalado las dependencias y configurado las variables de entorno, puedes ejecutar el proyecto:
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn app:app --reload
 ```
 
 Esto iniciará el servidor de desarrollo de FastAPI y podrás acceder a la API en `http://localhost:8000/docs`.
 
 ![img.png](img_md/img.png)
-Corrige el texto. Una vez en este punto, tendrás que ejecutar el scraping. Presiona el botón 'Try it out' y agrega los datos correspondientes. Recuerda que es una lista
+Una vez en este punto, tendrás que ejecutar el scraping. Presiona el botón 'Try it out' y agrega los datos correspondientes. Recuerda que es una lista.
 ![img_1.png](img_md/img_1.png)
 
 Esto buscará todos los procesos asociados a esos IDs y también buscará los detalles de cada proceso en Bagraumed, y los guardará en la base de datos
 ![img_2.png](img_md/img_2.png)
-Luego tendrás que crear un usuario y hacer login para obtener un token, el cual es necesario para hacer las próximas consultas
+Luego tendrás que crear un usuario y hacer login para obtener un token, el cual es necesario para hacer las próximas consultas.
 ![img_3.png](img_md/img_3.png)
 ![img_4.png](img_md/img_4.png)
-Ahora, para consultar los demás enporin, solo tienes que poner tu token y el código ID de lo que buscas. Recuerda que esta información ya está guardada en la base de datos.
+Ahora, para consultar los demás endpoints, solo tienes que poner tu token y el código ID de lo que buscas. Recuerda que esta información ya está guardada en la base de datos.
 ![img_5.png](img_md/img_5.png)
 
-#### Toma en cuenta que el código del scraping realiza múltiples peticiones a la API, por lo que puede demorar un poco en extraer la información y guardarla en la base de datos
+#### Ten en cuenta que el código de scraping realiza múltiples peticiones a la API, por lo que puede demorar un poco en extraer la información y guardarla en la base de datos.
 
 ## Contribución
 Si deseas contribuir a este proyecto, por favor sigue estas pautas:
